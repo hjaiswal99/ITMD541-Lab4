@@ -1,55 +1,93 @@
-function getSunriseSunsetByLocation() {
-  const useCurrentLocation = document.getElementById('currentLocation').checked;
-
-  if (useCurrentLocation) {
-    // Use Geolocation API to get current coordinates
+function getCurrentLocation() {
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        getSunriseSunsetByCoordinates(latitude, longitude);
+        displayLocation(latitude, longitude);
       },
       error => {
         console.error('Error getting current location:', error);
-        alert('Unable to retrieve current location. Please enter coordinates manually.');
+        alert('Error getting current location. Please try again.');
       }
     );
   } else {
-    // Use entered coordinates for named location
-    const searchLocation = document.getElementById('searchLocation').value;
-    getCoordinatesFromGeocode(searchLocation);
+    alert('Geolocation is not supported by this browser.');
   }
 }
 
-function getCoordinatesFromGeocode(location) {
-  const geocodeUrl = `https://geocode.maps.co?location=${encodeURIComponent(location)}`;
+function searchLocation() {
+  const locationInput = document.getElementById('locationSearch').value;
+  if (locationInput.trim() === '') {
+    alert('Please enter a location to search.');
+    return;
+  }
 
-  fetch(geocodeUrl)
+  // Update the geocode API URL with the correct endpoint and parameters
+  const geocodeApiUrl = `https://geocode.maps.co/geocode?address=${encodeURIComponent(locationInput)}`;
+
+  fetch(geocodeApiUrl)
     .then(response => response.json())
     .then(data => {
-      if (data.results && data.results.length > 0) {
-        const latitude = data.results[0].geometry.lat;
-        const longitude = data.results[0].geometry.lng;
-        getSunriseSunsetByCoordinates(latitude, longitude);
+      if (data.results.length > 0) {
+        const location = data.results[0].geometry.location;
+        displayLocation(location.lat, location.lng);
       } else {
-        console.error('Error retrieving coordinates from geocode API');
-        alert('Unable to retrieve coordinates for the entered location. Please try again.');
+        alert('Location not found. Please try again.');
       }
     })
     .catch(error => {
-      console.error('Error retrieving coordinates from geocode API:', error);
-      alert('Unable to retrieve coordinates for the entered location. Please try again.');
+      console.error('Error searching location:', error);
+      alert('Error searching location. Please try again.');
     });
 }
 
-function getSunriseSunsetByCoordinates(latitude, longitude) {
-  const apiUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
-
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => displayResult('Location', data))
-    .catch(error => console.error('Error:', error));
+function displayLocation(latitude, longitude) {
+  document.getElementById('latitude').value = latitude;
+  document.getElementById('longitude').value = longitude;
 }
 
-// Add event listener to the button
-document.getElementById('getSunriseSunsetBtn').addEventListener('click', getSunriseSunsetByLocation);
+function getSunriseSunset() {
+  const latitude = document.getElementById('latitude').value;
+  const longitude = document.getElementById('longitude').value;
+
+  // You may add additional validation for latitude and longitude inputs here
+
+  const todayUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
+  const tomorrowUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=tomorrow`;
+
+  // Fetch data for today
+  fetch(todayUrl)
+    .then(response => response.json())
+    .then(data => displayResult('Today', data))
+    .catch(error => console.error('Error fetching today\'s data:', error));
+
+  // Fetch data for tomorrow
+  fetch(tomorrowUrl)
+    .then(response => response.json())
+    .then(data => displayResult('Tomorrow', data))
+    .catch(error => console.error('Error fetching tomorrow\'s data:', error));
+}
+
+function displayResult(day, data) {
+  const resultDiv = document.getElementById('result');
+
+  if (data.status === 'OK') {
+    const results = data.results;
+    resultDiv.innerHTML += `<h2>${day}</h2>`;
+    resultDiv.innerHTML += `
+      <p>Sunrise: ${results.sunrise}</p>
+      <p>Sunset: ${results.sunset}</p>
+      <p>Dawn: ${results.dawn}</p>
+      <p>Dusk: ${results.dusk}</p>
+      <p>Day Length: ${results.day_length}</p>
+      <p>Solar Noon: ${results.solar_noon}</p>
+      <p>Timezone: ${results.timezone}</p>
+      <hr>`;
+  } else {
+    resultDiv.innerHTML += `<h2>${day}</h2>`;
+    resultDiv.innerHTML += '<p>Error retrieving data. Please try again.</p>';
+    resultDiv.innerHTML += '<hr>';
+  }
+}
+
