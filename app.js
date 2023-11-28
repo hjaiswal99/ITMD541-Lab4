@@ -1,3 +1,34 @@
+// Function to handle location search
+function searchLocation() {
+    const locationInput = document.getElementById('location-input').value;
+
+    // Use geocode API to get latitude and longitude for the entered location
+    $.ajax({
+        url: 'https://geocode.maps.co/',
+        method: 'GET',
+        data: {
+            address: locationInput
+        },
+        success: function(geocodeResponse) {
+            // Check if geocode response contains valid data
+            if (geocodeResponse.results.length > 0) {
+                const location = geocodeResponse.results[0].geometry.location;
+                
+                // Call the sunrise sunset API with the obtained latitude and longitude
+                getSunriseSunset(location.lat, location.lng);
+            } else {
+                // Show an error message for invalid location
+                showError({ statusText: 'Location not found' });
+            }
+        },
+        error: function(error) {
+            // Handle errors from geocode API
+            showError(error);
+        }
+    });
+}
+
+
 // Use AJAX to get sunrise and sunset data from the API
 
 // Example AJAX request using jQuery
