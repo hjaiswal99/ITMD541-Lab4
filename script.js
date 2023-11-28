@@ -1,52 +1,3 @@
-function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        displayLocation(latitude, longitude);
-      },
-      error => {
-        console.error('Error getting current location:', error);
-        alert('Error getting current location. Please try again.');
-      }
-    );
-  } else {
-    alert('Geolocation is not supported by this browser.');
-  }
-}
-
-function searchLocation() {
-  const locationInput = document.getElementById('locationSearch').value;
-  if (locationInput.trim() === '') {
-    alert('Please enter a location to search.');
-    return;
-  }
-
-  // Update the geocode API URL with the correct endpoint and parameters
-  const geocodeApiUrl = `https://geocode.maps.co/geocode?address=${encodeURIComponent(locationInput)}`;
-
-  fetch(geocodeApiUrl)
-    .then(response => response.json())
-    .then(data => {
-      if (data.results.length > 0) {
-        const location = data.results[0].geometry.location;
-        displayLocation(location.lat, location.lng);
-      } else {
-        alert('Location not found. Please try again.');
-      }
-    })
-    .catch(error => {
-      console.error('Error searching location:', error);
-      alert('Error searching location. Please try again.');
-    });
-}
-
-function displayLocation(latitude, longitude) {
-  document.getElementById('latitude').value = latitude;
-  document.getElementById('longitude').value = longitude;
-}
-
 function getSunriseSunset() {
   const latitude = document.getElementById('latitude').value;
   const longitude = document.getElementById('longitude').value;
@@ -91,3 +42,44 @@ function displayResult(day, data) {
   }
 }
 
+function getCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        document.getElementById('latitude').value = latitude;
+        document.getElementById('longitude').value = longitude;
+        getSunriseSunset();
+      },
+      error => {
+        console.error('Error getting current location:', error);
+        alert('Unable to retrieve your location. Please enter manually.');
+      }
+    );
+  } else {
+    alert('Geolocation is not supported by your browser. Please enter manually.');
+  }
+}
+
+// Add this function for forward geocoding
+function searchLocation() {
+  const query = document.getElementById('locationQuery').value;
+  const geocodeApiUrl = `https://geocode.maps.co/search?q=${encodeURIComponent(query)}`;
+
+  fetch(geocodeApiUrl)
+    .then(response => response.json())
+    .then(data => handleGeocodeResult(data))
+    .catch(error => console.error('Error:', error));
+}
+
+function handleGeocodeResult(data) {
+  if (data.results && data.results.length > 0) {
+    const location = data.results[0].geometry;
+    document.getElementById('latitude').value = location.lat;
+    document.getElementById('longitude').value = location.lng;
+    getSunriseSunset();
+  } else {
+    alert('Location not found. Please enter a valid location.');
+  }
+}
