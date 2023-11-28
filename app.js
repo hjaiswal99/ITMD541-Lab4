@@ -11,7 +11,7 @@ function searchLocation() {
 
 function getLocationCoordinates(location) {
     $.ajax({
-        url: 'https://geocode.maps.co/',
+        url: 'https://geocode.maps.co/search?',
         method: 'GET',
         data: {
             address: location
