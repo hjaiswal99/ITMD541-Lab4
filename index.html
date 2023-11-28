@@ -8,29 +8,19 @@
 </head>
 <body>
   <div class="container">
-    <h1>Sunrise and Sunset Times</h1>
-    <p>Find sunrise and sunset times for your location.</p>
-    <div class="search-container">
-      <button id="current-location-btn">Use Current Location</button>
-      <input type="text" id="location-input" placeholder="Enter location">
-      <button id="search-btn">Search</button>
+    <h1>Sunrise Sunset Dashboard</h1>
+    <div>
+      <label for="latitude">Latitude:</label>
+      <input type="text" id="latitude" placeholder="Enter latitude">
     </div>
-    <div class="result-container">
-      <h2>Today</h2>
-      <div class="result-today">
-        <p>Sunrise: <strong><span id="sunrise-today"></span></strong></p>
-        <p>Sunset: <strong><span id="sunset-today"></span></strong></p>
-        <!-- Add more details as needed -->
-      </div>
-      <h2>Tomorrow</h2>
-      <div class="result-tomorrow">
-        <!-- Repeat the structure for tomorrow's data -->
-      </div>
+    <div>
+      <label for="longitude">Longitude:</label>
+      <input type="text" id="longitude" placeholder="Enter longitude">
     </div>
-    <code id="raw-output"></code>
+    <button onclick="getSunriseSunset()">Get Sunrise Sunset</button>
+    <div id="result"></div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
