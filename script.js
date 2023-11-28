@@ -1,43 +1,55 @@
-function getSunriseSunset() {
-  const latitude = document.getElementById('latitude').value;
-  const longitude = document.getElementById('longitude').value;
+function getSunriseSunsetByLocation() {
+  const useCurrentLocation = document.getElementById('currentLocation').checked;
 
-  // You may add additional validation for latitude and longitude inputs here
-
-  const todayUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
-  const tomorrowUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=tomorrow`;
-
-  // Fetch data for today
-  fetch(todayUrl)
-    .then(response => response.json())
-    .then(data => displayResult('Today', data))
-    .catch(error => console.error('Error fetching today\'s data:', error));
-
-  // Fetch data for tomorrow
-  fetch(tomorrowUrl)
-    .then(response => response.json())
-    .then(data => displayResult('Tomorrow', data))
-    .catch(error => console.error('Error fetching tomorrow\'s data:', error));
-}
-
-function displayResult(day, data) {
-  const resultDiv = document.getElementById('result');
-
-  if (data.status === 'OK') {
-    const results = data.results;
-    resultDiv.innerHTML += `<h2>${day}</h2>`;
-    resultDiv.innerHTML += `
-      <p>Sunrise: ${results.sunrise}</p>
-      <p>Sunset: ${results.sunset}</p>
-      <p>Dawn: ${results.dawn}</p>
-      <p>Dusk: ${results.dusk}</p>
-      <p>Day Length: ${results.day_length}</p>
-      <p>Solar Noon: ${results.solar_noon}</p>
-      <p>Timezone: ${results.timezone}</p>
-      <hr>`;
+  if (useCurrentLocation) {
+    // Use Geolocation API to get current coordinates
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        getSunriseSunsetByCoordinates(latitude, longitude);
+      },
+      error => {
+        console.error('Error getting current location:', error);
+        alert('Unable to retrieve current location. Please enter coordinates manually.');
+      }
+    );
   } else {
-    resultDiv.innerHTML += `<h2>${day}</h2>`;
-    resultDiv.innerHTML += '<p>Error retrieving data. Please try again.</p>';
-    resultDiv.innerHTML += '<hr>';
+    // Use entered coordinates for named location
+    const searchLocation = document.getElementById('searchLocation').value;
+    getCoordinatesFromGeocode(searchLocation);
   }
 }
+
+function getCoordinatesFromGeocode(location) {
+  const geocodeUrl = `https://geocode.maps.co?location=${encodeURIComponent(location)}`;
+
+  fetch(geocodeUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.results && data.results.length > 0) {
+        const latitude = data.results[0].geometry.lat;
+        const longitude = data.results[0].geometry.lng;
+        getSunriseSunsetByCoordinates(latitude, longitude);
+      } else {
+        console.error('Error retrieving coordinates from geocode API');
+        alert('Unable to retrieve coordinates for the entered location. Please try again.');
+      }
+    })
+    .catch(error => {
+      console.error('Error retrieving coordinates from geocode API:', error);
+      alert('Unable to retrieve coordinates for the entered location. Please try again.');
+    });
+}
+
+function getSunriseSunsetByCoordinates(latitude, longitude) {
+  const apiUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => displayResult('Location', data))
+    .catch(error => console.error('Error:', error));
+}
+
+// Add event listener to the button
+document.getElementById('getSunriseSunsetBtn').addEventListener('click', getSunriseSunsetByLocation);
