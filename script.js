@@ -4,27 +4,40 @@ function getSunriseSunset() {
 
   // You may add additional validation for latitude and longitude inputs here
 
-  const apiUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
+  const todayUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
+  const tomorrowUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=tomorrow`;
 
-  fetch(apiUrl)
+  // Fetch data for today
+  fetch(todayUrl)
     .then(response => response.json())
-    .then(data => displayResult(data))
-    .catch(error => console.error('Error:', error));
+    .then(data => displayResult('Today', data))
+    .catch(error => console.error('Error fetching today\'s data:', error));
+
+  // Fetch data for tomorrow
+  fetch(tomorrowUrl)
+    .then(response => response.json())
+    .then(data => displayResult('Tomorrow', data))
+    .catch(error => console.error('Error fetching tomorrow\'s data:', error));
 }
 
-function displayResult(data) {
+function displayResult(day, data) {
   const resultDiv = document.getElementById('result');
 
   if (data.status === 'OK') {
     const results = data.results;
-    resultDiv.innerHTML = `
+    resultDiv.innerHTML += `<h2>${day}</h2>`;
+    resultDiv.innerHTML += `
       <p>Sunrise: ${results.sunrise}</p>
       <p>Sunset: ${results.sunset}</p>
-      <p>First Light: ${results.first_light}</p>
-      <p>Last Light: ${results.last_light}</p>
-      <!-- Add more information as needed -->
-    `;
+      <p>Dawn: ${results.dawn}</p>
+      <p>Dusk: ${results.dusk}</p>
+      <p>Day Length: ${results.day_length}</p>
+      <p>Solar Noon: ${results.solar_noon}</p>
+      <p>Timezone: ${results.timezone}</p>
+      <hr>`;
   } else {
-    resultDiv.innerHTML = '<p>Error retrieving data. Please try again.</p>';
+    resultDiv.innerHTML += `<h2>${day}</h2>`;
+    resultDiv.innerHTML += '<p>Error retrieving data. Please try again.</p>';
+    resultDiv.innerHTML += '<hr>';
   }
 }
