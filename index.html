@@ -17,15 +17,14 @@
       <label for="longitude">Longitude:</label>
       <input type="text" id="longitude" placeholder="Enter longitude">
     </div>
+    <button onclick="getSunriseSunset()">Get Sunrise Sunset</button>
+    <button onclick="getCurrentLocation()">Use Current Location</button>
+    <!-- Add this input field for location search -->
     <div>
-      <button onclick="getCurrentLocation()">Get Current Location</button>
-    </div>
-    <div>
-      <label for="locationSearch">Location Search:</label>
-      <input type="text" id="locationSearch" placeholder="Enter location">
+      <label for="locationQuery">Search Location:</label>
+      <input type="text" id="locationQuery" placeholder="Enter location">
       <button onclick="searchLocation()">Search</button>
     </div>
-    <button onclick="getSunriseSunset()">Get Sunrise Sunset</button>
     <div id="result"></div>
   </div>
 
