@@ -11,15 +11,12 @@ function searchLocation() {
 
 function getLocationCoordinates(location) {
     $.ajax({
-        url: 'https://geocode.maps.co/search?',
+        url: `https://geocode.maps.co/search?q=${encodeURIComponent(location)}`,
         method: 'GET',
-        data: {
-            address: location
-        },
         success: function(geocodeResponse) {
             if (geocodeResponse.results.length > 0) {
                 const coordinates = geocodeResponse.results[0].geometry.location;
-                getSunriseSunset(coordinates.lat, coordinates.lng);
+                getSunriseSunset(coordinates.lat, coordinates.lon);
             } else {
                 showError({ statusText: 'Location not found' });
             }
@@ -72,14 +69,8 @@ function handleError(error) {
 
 function getSunriseSunset(latitude, longitude) {
     $.ajax({
-        url: 'https://api.sunrise-sunset.org/json?',
+        url: `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}`,
         method: 'GET',
-        data: {
-            lat: latitude,
-            lng: longitude,
-            date: 'today',
-            formatted: 0
-        },
         success: function(response) {
             updateDashboard(response);
         },
