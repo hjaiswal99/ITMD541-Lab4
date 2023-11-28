@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Sunrise Sunset Dashboard</title>
-</head>
-<body>
-    <div class="container">
-        <div id="location-search">
-            <label for="location-input">Enter Location:</label>
-            <input type="text" id="location-input" placeholder="Enter location">
-            <button onclick="searchLocation()">Search</button>
-        </div>
-        <button onclick="getCurrentLocation()">Use Current Location</button>
-        <div id="dashboard">
-            <!-- Display sunrise, sunset, dawn, dusk, day length, solar noon, and time zone information here -->
-        </div>
-        <div id="error-message" style="color: red; display: none;"></div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
+<div class="container">
+  <h1>Sunrise and Sunset Times for NYC</h1>
+  <p>Example using the <a href="https://sunrisesunset.io/api/">SunriseSunset.io API</a>.</p>
+  <p>Sunrise: <strong><span id="sunrise"></span></strong></p>
+  <p>Sunset: <strong><span id="sunset"></span></strong></p>
+  <code id="raw-output"></code>
+</div>
