@@ -62,10 +62,10 @@ function getCurrentLocation() {
   }
 }
 
-// Add this function for forward geocoding
+// Modify the searchLocation function to accept city as a parameter
 function searchLocation() {
-  const query = document.getElementById('locationQuery').value;
-  const geocodeApiUrl = `https://geocode.maps.co/search?q=${encodeURIComponent(query)}`;
+  const city = document.getElementById('locationQuery').value;
+  const geocodeApiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
 
   fetch(geocodeApiUrl)
     .then(response => response.json())
