@@ -72,7 +72,7 @@ function handleError(error) {
 
 function getSunriseSunset(latitude, longitude) {
     $.ajax({
-        url: 'https://api.sunrise-sunset.org/json',
+        url: 'https://api.sunrise-sunset.org/json?',
         method: 'GET',
         data: {
             lat: latitude,
