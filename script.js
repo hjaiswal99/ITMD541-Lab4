@@ -1,14 +1,12 @@
 let geocode = {
   reverseGeocode: function (latitude, longitude) {
-    var apikey = "80a0a5c1c1db477e8567458eda7327ee";
+    
 
-    var api_url = "https://api.opencagedata.com/geocode/v1/json";
+    var api_url = "https://api.geocode.maps.co/reverse?lat={latitude}&lon={longitude}/v1/json";
 
     var request_url =
       api_url +
       "?" +
-      "key=" +
-      apikey +
       "&q=" +
       encodeURIComponent(latitude + "," + longitude) +
       "&pretty=1" +
@@ -75,7 +73,7 @@ document.querySelector(".geolocation button").addEventListener("click", () =>{
 
 let weather={
   fetchweather: function(city){
-    fetch("https://weatherdbi.herokuapp.com/data/weather/"+city)
+    fetch("https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`")
     .then((response)=>{
       
       if (!response.ok) {
