@@ -7,26 +7,23 @@
   <title>Sunrise Sunset Dashboard</title>
 </head>
 <body>
-  <div>
-  <input type="checkbox" id="currentLocation">
-  <label for="currentLocation">Use Current Location</label>
-</div>
-<div>
-  <label for="searchLocation">Search Location:</label>
-  <input type="text" id="searchLocation" placeholder="Enter location">
-</div>
   <div class="container">
     <h1>Sunrise Sunset Dashboard</h1>
     <div>
       <label for="latitude">Latitude:</label>
       <input type="text" id="latitude" placeholder="Enter latitude">
     </div>
-
-<button id="getSunriseSunsetBtn">Get Sunrise Sunset</button>
-
     <div>
       <label for="longitude">Longitude:</label>
       <input type="text" id="longitude" placeholder="Enter longitude">
+    </div>
+    <div>
+      <button onclick="getCurrentLocation()">Get Current Location</button>
+    </div>
+    <div>
+      <label for="locationSearch">Location Search:</label>
+      <input type="text" id="locationSearch" placeholder="Enter location">
+      <button onclick="searchLocation()">Search</button>
     </div>
     <button onclick="getSunriseSunset()">Get Sunrise Sunset</button>
     <div id="result"></div>
