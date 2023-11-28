@@ -1,98 +1,153 @@
-function searchLocation() {
-    const locationInput = document.getElementById('location-input').value;
+let geocode = {
+  reverseGeocode: function (latitude, longitude) {
+    var apikey = "80a0a5c1c1db477e8567458eda7327ee";
 
-    if (locationInput.trim() === '') {
-        showError({ statusText: 'Please enter a location' });
-        return;
+    var api_url = "https://api.opencagedata.com/geocode/v1/json";
+
+    var request_url =
+      api_url +
+      "?" +
+      "key=" +
+      apikey +
+      "&q=" +
+      encodeURIComponent(latitude + "," + longitude) +
+      "&pretty=1" +
+      "&no_annotations=1";
+
+
+
+    var request = new XMLHttpRequest();
+    request.open("GET", request_url, true);
+
+    request.onload = function () {
+      
+
+      if (request.status == 200) {
+  
+        var data = JSON.parse(request.responseText);
+        weather.fetchweather(data.results[0].components.city);
+        console.log(data.results[0].components.city)
+      } else if (request.status <= 500) {
+      
+
+        console.log("unable to geocode! Response code: " + request.status);
+        var data = JSON.parse(request.responseText);
+        console.log("error msg: " + data.status.message);
+      } else {
+        console.log("server error");
+      }
+    };
+
+    request.onerror = function () {
+    
+      console.log("SERVER ERROR");
+    };
+
+    request.send(); 
+  },
+  getGeoLocation: function() {
+    function success (data) {
+      geocode.reverseGeocode(data.coords.latitude, data.coords.longitude);
     }
-
-    getLocationCoordinates(locationInput);
-}
-
-function getLocationCoordinates(location) {
-    $.ajax({
-        url: `https://geocode.maps.co/search?q={location}`,
-        method: 'GET',
-        success: function(geocodeResponse) {
-            if (geocodeResponse.results && geocodeResponse.results.length > 0) {
-                const coordinates = geocodeResponse.results[0].geometry.location;
-                getSunriseSunset(coordinates.lat, coordinates.lng);
-            } else {
-                showError({ statusText: 'Location not found' });
-            }
-        },
-        error: function(error) {
-            showError(error);
-        }
-    });
-}
-
-function getCurrentLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                getSunriseSunset(latitude, longitude);
-            },
-            function(error) {
-                handleError(error);
-            }
-        );
-    } else {
-        showError({ statusText: 'Geolocation is not supported by your browser' });
+      navigator.geolocation.getCurrentPosition(success, console.error);
     }
-}
+    else {
+      weather.fetchWeather("Denver");
+    }
+  }
+};
 
-// Rest of the code remains the same
+document.querySelector(".search button").addEventListener("click",function(){
+  weather.search();
+})
 
-// Function to get sunrise and sunset data using latitude and longitude
-function getSunriseSunset(latitude, longitude) {
-    $.ajax({
-        url: `https://geocode.maps.co/search?q={location}`,
-        method: 'GET',
-        success: function(response) {
-            updateDashboard(response);
-        },
-        error: function(error) {
-            showError(error);
-        }
-    });
-}
+document.querySelector(".search-bar").addEventListener("keyup",function(event){
+  if(event.key=="Enter")
+  weather.search();
+});
 
-// Function to update the dashboard with sunrise and sunset data
-function updateDashboard(data) {
-    // Implement the updateDashboard function
-    // ...
-}
+document.querySelector(".geolocation button").addEventListener("click", () =>{
+    document.querySelector(".search-bar").value="";
+    geocode.getGeoLocation();
+  
+});
 
-// Function to handle errors and display error messages
-function showError(error) {
-    const errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = `Error: ${error.statusText}`;
-    errorMessage.style.display = 'block';
-}
+let weather={
+  fetchweather: function(city){
+    fetch("https://weatherdbi.herokuapp.com/data/weather/"+city)
+    .then((response)=>{
+      
+      if (!response.ok) {
+        document.querySelector(".error").innerText="Please check the city name for getting weather details...";
+        alert("No weather found.");
+        throw new Error("No weather found.");
+      }
+      
+      return response.json();
+      
+    })
+    .then((data)=>this.displayWeather(data)); 
+   },
 
-// Function to handle geolocation errors
-function handleError(error) {
-    let errorMessage;
+   displayWeather: function(data){
+    if(data.code==0)
+    {
+      document.querySelector(".error").innerText="DOES NOT EXIST.CHECK CITY NAME";
+     
+    }
+    if(data.code==1)
+    {
+      document.querySelector(".error").innerText="PLEASE ENTER VALID LOCATION";
+     
+    }
+    if(data.code==2)
+    {
+      document.querySelector(".error").innerText="NOT AVAILABLE";
+     
+    }
+  
+    const { region }=data;
+    const { dayhour,precip,humidity,comment,iconURL }=data.currentConditions;
+    const { c }=data.currentConditions.temp;
+    const { km }=data.currentConditions.wind;
 
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            errorMessage = 'User denied the request for geolocation.';
-            break;
-        case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Location information is unavailable.';
-            break;
-        case error.TIMEOUT:
-            errorMessage = 'The request to get user location timed out.';
-            break;
-        case error.UNKNOWN_ERROR:
-            errorMessage = 'An unknown error occurred.';
-            break;
-        default:
-            errorMessage = 'An error occurred while getting user location.';
+    console.log(region,dayhour,c,precip,humidity,km,comment,iconURL);
+    document.querySelector(".error-msg").innerText="";
+    document.querySelector(".city").innerText="Weather in "+ region + " at "+dayhour;
+    document.querySelector(".icon").src=iconURL;
+    document.querySelector(".humidity").innerText="Humidity: "+humidity;
+    document.querySelector(".wind").innerText="Wind Speed: "+km+" km/h";
+    document.querySelector(".temp").innerText=c+"°C";
+    document.querySelector(".description").innerText=comment;
+    document.querySelector(".weather").classList.remove("loading");
+
+    for(i=0;i<7;i++)
+    { 
+      document.querySelector(".weather_forecast_day"+(i+1)).innerText=data.next_days[i].day; 
+      document.querySelector(".description"+(i+1)).innerText=data.next_days[i].comment;  
+      document.querySelector(".day"+(i+1)+"max").innerText="Max: "+data.next_days[i].max_temp.c;  
+      document.querySelector(".day"+(i+1)+"min").innerText="Min: "+data.next_days[i].min_temp.c;  
+      document.querySelector(".weather_forecast_icon"+(i+1)).src=data.next_days[i].iconURL;  
+
     }
 
-    showError({ statusText: errorMessage });
+
+   },
+
+   search: function(){
+    this.fetchweather(document.querySelector(".search-bar").value);
+   } 
+   
+};
+
+
+function onError(error){
+  
+  document.querySelector(".error").innerText="ERROR FETCHING USER LOCATION"
+  console.log(error.message);
 }
+
+geocode.getGeoLocation();
+
+
