@@ -49,7 +49,7 @@ function getCurrentLocation() {
 // Function to get sunrise and sunset data using latitude and longitude
 function getSunriseSunset(latitude, longitude) {
     $.ajax({
-        url: `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}`,
+        url: `https://geocode.maps.co/search?q={location}`,
         method: 'GET',
         success: function(response) {
             updateDashboard(response);
