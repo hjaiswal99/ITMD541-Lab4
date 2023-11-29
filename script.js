@@ -95,7 +95,7 @@ function searchLocation() {
         return;
     }
 
-    const apiUrl = `https://geocode.maps.s.co/search?city=${encodeURIComponent(city)}`;
+    const apiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
 
     fetch(apiUrl)
         .then(response => {
