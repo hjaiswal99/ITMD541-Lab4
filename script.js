@@ -85,43 +85,44 @@ function getCurrentLocation() {
 
 // Corrected searchLocation function
 function searchLocation() {
-    const cityInput = document.getElementById('cityInput');
-    const resultElement = document.getElementById('result');
+  const cityInput = document.getElementById('locationQuery');
+  const resultElement = document.getElementById('result');
 
-    const city = cityInput.value.trim();
+  const city = cityInput.value.trim();
 
-    if (city === '') {
-        resultElement.textContent = 'Please enter a city.';
-        return;
-    }
+  if (city === '') {
+    resultElement.textContent = 'Please enter a city.';
+    return;
+  }
 
-    const apiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
+  const apiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
 
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('API Response:', data);
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('API Response:', data);
 
-            if (data && data.results && data.results.length > 0) {
-                const firstResult = data.results[0];
-                if (firstResult.geometry && firstResult.geometry.lat && firstResult.geometry.lon) {
-                    const latitude = firstResult.geometry.lat;
-                    const longitude = firstResult.geometry.lon;
-                    resultElement.textContent = `Location: Latitude ${latitude}, Longitude ${longitude}`;
-                } else {
-                    resultElement.textContent = 'Latitude and Longitude information not available for the first result.';
-                }
-            } else {
-                resultElement.textContent = 'Location not found.';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            resultElement.textContent = 'An error occurred while fetching data.';
-        });
+      if (data && data.length > 0) {
+        const firstResult = data[0];
+        if (firstResult.lat && firstResult.lon) {
+          const latitude = firstResult.lat;
+          const longitude = firstResult.lon;
+          const displayName = firstResult.display_name;
+          resultElement.textContent = `Location of ${displayName}: Latitude ${latitude}, Longitude ${longitude}`;
+        } else {
+          resultElement.textContent = 'Latitude and Longitude information not available for the first result.';
+        }
+      } else {
+        resultElement.textContent = 'Location not found.';
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+      resultElement.textContent = 'An error occurred while fetching data.';
+    });
 }
