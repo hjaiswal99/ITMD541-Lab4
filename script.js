@@ -88,6 +88,12 @@ function searchLocation() {
   const cityInput = document.getElementById('locationQuery');
   const resultElement = document.getElementById('result');
 
+  // Check if the input element exists
+  if (!cityInput) {
+    console.error('Error: Unable to find input element with ID "locationQuery".');
+    return;
+  }
+
   const city = cityInput.value.trim();
 
   if (city === '') {
@@ -95,7 +101,7 @@ function searchLocation() {
     return;
   }
 
-  const apiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
+  const apiUrl = `https://geocode.maps.co/search?q=${encodeURIComponent(city)}`;
 
   fetch(apiUrl)
     .then(response => {
@@ -126,3 +132,5 @@ function searchLocation() {
       resultElement.textContent = 'An error occurred while fetching data.';
     });
 }
+
+// Rest of your existing code...
