@@ -9,7 +9,7 @@ body {
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: #aee6e6; /* Light blue background color */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
