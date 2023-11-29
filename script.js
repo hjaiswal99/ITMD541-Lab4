@@ -85,44 +85,28 @@ function getCurrentLocation() {
 
 // Corrected searchLocation function
 function searchLocation() {
-    const cityInput = document.getElementById('cityInput');
-    const resultElement = document.getElementById('result');
+  // Clear previous results
+  clearResults();
 
-    const city = cityInput.value.trim();
+  const city = document.getElementById('locationQuery').value;
+  const geocodeApiUrl = `https://geocode.maps.co/search?q=${encodeURIComponent(city)}`;
 
-    if (city === '') {
-        resultElement.textContent = 'Please enter a city.';
-        return;
-    }
+  fetch(geocodeApiUrl)
+    .then(response => response.json())
+    .then(data => handleGeocodeResult(data))
+    .catch(error => {
+      console.error('Error:', error);
+      displayError();
+    });
+}
 
-    const apiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
-
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('API Response:', data);
-
-            if (data && data.length > 0) {
-                const firstResult = data[0];
-                if (firstResult.lat && firstResult.lon) {
-                    const latitude = firstResult.lat;
-                    const longitude = firstResult.lon;
-                    const displayName = firstResult.display_name;
-                    resultElement.textContent = `Location of ${displayName}: Latitude ${latitude}, Longitude ${longitude}`;
-                } else {
-                    resultElement.textContent = 'Latitude and Longitude information not available for the first result.';
-                }
-            } else {
-                resultElement.textContent = 'Location not found.';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            resultElement.textContent = 'An error occurred while fetching data.';
-        });
+function handleGeocodeResult(data) {
+  if (data.results && data.results.length > 0) {
+    const location = data.results[0].geometry;
+    document.getElementById('lat').value = location.lat;
+    document.getElementById('lon').value = location.lon;
+    getSunriseSunset();
+  } else {
+    alert('Location not found. Please enter a valid location.');
+  }
 }
