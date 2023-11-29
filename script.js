@@ -83,13 +83,13 @@ function getCurrentLocation() {
   }
 }
 
-// Modify the searchLocation function to accept city as a parameter
+// Corrected searchLocation function
 function searchLocation() {
   // Clear previous results
   clearResults();
 
   const city = document.getElementById('locationQuery').value;
-  const geocodeApiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
+  const geocodeApiUrl = `https://geocode.maps.co/search?q=${encodeURIComponent(city)}`;
 
   fetch(geocodeApiUrl)
     .then(response => response.json())
