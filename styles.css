@@ -16,7 +16,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #333333;
+  color: #007bff;
 }
 
 div {
@@ -70,4 +70,38 @@ hr {
   border: 0;
   border-top: 1px solid #eeeeee;
   margin: 10px 0;
+}
+
+/* Styled images */
+.weather-icon {
+  max-width: 50px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.weather-condition {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.weather-condition img {
+  max-width: 30px;
+  margin-right: 10px;
+}
+
+/* Example image links (replace with actual links) */
+.sunrise-icon {
+  content: url('https://www.flaticon.com/free-icon/sunrise_1163765');
+}
+
+.sunset-icon {
+  content: url('https://www.flaticon.com/free-icon/sunset_362409');
+}
+
+.weather-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
