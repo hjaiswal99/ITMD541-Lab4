@@ -9,7 +9,7 @@ body {
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #ff0000; /* Red background color for the dashboard box */
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
