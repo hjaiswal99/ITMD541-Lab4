@@ -1,51 +1,60 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  text-align: center;
-}
-
-div {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #4caf50;
+  display: flex;
+  background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/Awesome-Natural-Desktop-Background-wallpaper.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
+  height: 100vh;
+  margin: 0;
 }
 
-button:hover {
-  background-color: #45a049;
+@media screen and (min-width: 601px) {
+  div.main {
+    display: grid;
+    justify-content: center;
+    background-color: #343F3E;
+    width: 100%;
+    max-width: fit-content;
+    margin: auto;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  div.search {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    width: 20rem;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  /* ... (rest of your styles) ... */
 }
 
-#result {
-  margin-top: 20px;
+@media only screen and (max-width: 600px) {
+  div.main {
+    display: grid;
+    justify-content: center;
+    background-color: #343F3E;
+    width: 100%;
+    margin: auto;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  div.search {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    width: 20rem;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  /* ... (rest of your styles) ... */
 }
