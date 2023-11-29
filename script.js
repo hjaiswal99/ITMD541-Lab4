@@ -1,4 +1,7 @@
 function getSunriseSunset() {
+  // Clear previous results
+  clearResults();
+
   const latitude = document.getElementById('latitude').value;
   const longitude = document.getElementById('longitude').value;
 
@@ -11,13 +14,28 @@ function getSunriseSunset() {
   fetch(todayUrl)
     .then(response => response.json())
     .then(data => displayResult('Today', data))
-    .catch(error => console.error('Error fetching today\'s data:', error));
+    .catch(error => {
+      console.error('Error fetching today\'s data:', error);
+      displayError();
+    });
 
   // Fetch data for tomorrow
   fetch(tomorrowUrl)
     .then(response => response.json())
     .then(data => displayResult('Tomorrow', data))
-    .catch(error => console.error('Error fetching tomorrow\'s data:', error));
+    .catch(error => {
+      console.error('Error fetching tomorrow\'s data:', error);
+      displayError();
+    });
+}
+
+function clearResults() {
+  document.getElementById('result').innerHTML = '';
+}
+
+function displayError() {
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = '<p>Error retrieving data. Please try again.</p>';
 }
 
 function displayResult(day, data) {
@@ -43,6 +61,9 @@ function displayResult(day, data) {
 }
 
 function getCurrentLocation() {
+  // Clear previous results
+  clearResults();
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -64,13 +85,19 @@ function getCurrentLocation() {
 
 // Modify the searchLocation function to accept city as a parameter
 function searchLocation() {
+  // Clear previous results
+  clearResults();
+
   const city = document.getElementById('locationQuery').value;
   const geocodeApiUrl = `https://geocode.maps.co/search?city=${encodeURIComponent(city)}`;
 
   fetch(geocodeApiUrl)
     .then(response => response.json())
     .then(data => handleGeocodeResult(data))
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+      console.error('Error:', error);
+      displayError();
+    });
 }
 
 function handleGeocodeResult(data) {
