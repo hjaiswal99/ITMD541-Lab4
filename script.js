@@ -103,8 +103,8 @@ function searchLocation() {
 function handleGeocodeResult(data) {
   if (data.results && data.results.length > 0) {
     const location = data.results[0].geometry;
-    document.getElementById('latitude').value = location.lat;
-    document.getElementById('longitude').value = location.lng;
+    document.getElementById('lat').value = location.lat;
+    document.getElementById('lon').value = location.lon;
     getSunriseSunset();
   } else {
     alert('Location not found. Please enter a valid location.');
