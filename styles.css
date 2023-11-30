@@ -1,45 +1,47 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #ff0000;
+  background-color: #e6f7ff; /* Light blue background color */
   margin: 0;
   padding: 0;
+  background-image: url('https://img.freepik.com/free-vector/summer-nature-landscape-scenery-valley-with-lake-mountains-green-field-conifers-trees-pond-spruces-blue-sky-with-fluffy-clouds-flying-birds-cartoon-parallax-vector-background_107791-8153.jpg?w=1800&t=st=1701303595~exp=1701304195~hmac=25f8d2ed815691e99cb524e5ab66ad512878f67e73287a8d618492b913f2f7bd.jpg'); /* Replace 'your-background-image.jpg' with the actual image file */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .container {
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-}
-
-div {
-  margin-bottom: 15px;
+  color: #333; /* Dark gray text color */
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #555; /* Medium gray text color for labels */
 }
 
 input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
 button {
   background-color: #4caf50;
   color: white;
-  padding: 10px;
+  padding: 12px;
   border: none;
   cursor: pointer;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 button:hover {
@@ -48,4 +50,5 @@ button:hover {
 
 #result {
   margin-top: 20px;
+  color: #333; /* Dark gray text color for result */
 }
