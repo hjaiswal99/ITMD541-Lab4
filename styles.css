@@ -1,9 +1,9 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #e6f7ff; /* Light blue background color */
+  background-color: #e6f7ff;
   margin: 0;
   padding: 0;
-  background-image: url('https://img.freepik.com/free-vector/paper-origami-landscape_24908-57203.jpg?w=1380&t=st=1701304276~exp=1701304876~hmac=a60c0cb74490c85bb71129889fc3bd1eed34a620fbbca8e34a6a27f65635f6ec.jpg'); /* Replace 'your-background-image.jpg' with the actual image file */
+  background-image: url('https://img.freepik.com/free-vector/flat-design-weather-effects_23-2149131035.jpg?w=1380&t=st=1701304302~exp=1701304902~hmac=0cfe250cece95ada4ec164118a6b6db3e299087ab9d151e73249c460fa89b29b.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,19 +13,19 @@ body {
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-  color: #333; /* Dark gray text color */
+  color: #333;
 }
 
 label {
   display: block;
   margin-bottom: 8px;
-  color: #555; /* Medium gray text color for labels */
+  color: #555;
 }
 
 input {
@@ -48,7 +48,18 @@ button:hover {
   background-color: #45a049;
 }
 
-#result {
+/* Result Boxes */
+.result-box {
   margin-top: 20px;
-  color: #333; /* Dark gray text color for result */
+  padding: 15px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.result-box-1 {
+  background-color: #ffcccb; /* Light coral background color */
+}
+
+.result-box-2 {
+  background-color: #c0c0c0; /* Silver background color */
 }
