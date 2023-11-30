@@ -1,11 +1,11 @@
 function getSunriseSunset() {
-  // Clear previous results
+  // to Clear previous results
   clearResults();
 
   const latitude = document.getElementById('latitude').value;
   const longitude = document.getElementById('longitude').value;
 
-  // You may add additional validation for latitude and longitude inputs here
+  // You can add additional validation for latitude and longitude inputs here
 
   const todayUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`;
   const tomorrowUrl = `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=tomorrow`;
@@ -133,4 +133,3 @@ function searchLocation() {
     });
 }
 
-// Rest of your existing code...
